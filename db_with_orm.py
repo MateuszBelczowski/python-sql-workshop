@@ -1,6 +1,6 @@
 import sqlalchemy
 from sqlalchemy import create_engine, Column, Integer, TEXT, UniqueConstraint, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 engine = create_engine("sqlite:///music_quiz_orm.db")
@@ -39,3 +39,13 @@ Quiz.answers = relationship('Answer', back_populates='quiz')
 
 
 Base.metadata.create_all(engine)
+
+Session = sessionmaker(bind=engine)
+session = Session()
+
+
+def add_song(artist, title, lyrics):
+    song = Song(artist=artist, title=title, lyrics=lyrics)
+    session.add(song)
+    session.commit()
+
