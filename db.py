@@ -1,5 +1,6 @@
 import sqlite3
 import json
+import random
 
 DATABASE_NAME = "music_quiz.db"
 
@@ -38,8 +39,38 @@ def get_all_songs():
     """
     all_songs = connection.execute(get_songs_sql).fetchall()
     print(f"There are {len(all_songs)} in the database")
+    return all_songs
+
+def get_song_by_id(song_id):
+    get_song_sql = """
+    SELECT * FROM songs WHERE id=?;
+    """
+    one_song = connection.execute(get_song_sql, (song_id, )).fetchone()
+    return one_song
+
+
+def get_random_lyrics():
+    all_songs = get_all_songs()
+    id, artist, title, lyrics = random.choice(all_songs)
+    return id, lyrics
+
+def create_quizzes_table():
+    pass
+
+def add_quiz():
+    pass
+
+def create_answers_table():
+    pass
+
+def add_answer():
+    pass
+
+def summarize_quiz():
+    pass
 
 
 create_songs_table()
-add_all_songs()
-get_all_songs()
+id, lyrics = get_random_lyrics()
+print(lyrics)
+print(get_song_by_id(id))
