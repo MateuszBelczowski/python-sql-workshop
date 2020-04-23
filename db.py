@@ -65,8 +65,13 @@ def create_quizzes_table():
     """
     connection.execute(create_quizzes_table_sql)
 
-def add_quiz():
-    pass
+def add_quiz(nickname, total_questions):
+    add_quiz_sql = """
+    INSERT INTO quizzes(nickname, total_questions) VALUES (?, ?);
+    """
+    with connection:
+        res = connection.execute(add_quiz_sql, (nickname, total_questions))
+    return res.lastrowid
 
 def create_answers_table():
     pass
@@ -80,3 +85,5 @@ def summarize_quiz():
 
 create_songs_table()
 create_quizzes_table()
+quiz_id = add_quiz("Mateusz", 4)
+print(f"Utworzony quiz ma id {quiz_id}")
