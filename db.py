@@ -98,10 +98,11 @@ def add_answer(song_id, quiz_id, answer, given_lyrics):
 
 def summarize_quiz(quiz_id):
     summary_sql = """
-    SELECT songs.artist, answers.answer FROM answers JOIN songs.id=answers.song_id
+    SELECT songs.artist, answers.answer FROM answers JOIN songs ON songs.id=answers.song_id
     WHERE quiz_id=?
     """
-    connection.execute(summary_sql, (quiz_id, ))
+    summary = connection.execute(summary_sql, (quiz_id, )).fetchall()
+    return summary
 
 
 create_songs_table()
@@ -109,3 +110,9 @@ create_quizzes_table()
 quiz_id = add_quiz("Mateusz", 4)
 print(f"Utworzony quiz ma id {quiz_id}")
 create_answers_table()
+for i in range(1, 6):
+    add_answer(i, quiz_id, "Adele", "blabla")
+
+print(summarize_quiz(quiz_id))
+
+
