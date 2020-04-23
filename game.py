@@ -8,6 +8,7 @@ class GuessThatSongQuiz:
         quiz_id = add_quiz(username, total_questions)
         self.quiz_id = quiz_id
         self.total_questions = int(total_questions)
+        self.points = 0
 
     def play(self):
         for i in range(self.total_questions):
@@ -26,9 +27,11 @@ class GuessThatSongQuiz:
         print(f"User's answer was {answer}")
         correct_artist, title = get_song_by_id(song_id)
         if correct_artist == answer:
+            self.points += 5
             print("Congratulations...")
         else:
             print(f"Nope, it was {correct_artist} with the song {title}")
+            self.points -= 10
 
         add_answer(song_id, self.quiz_id, answer, lyrics)
 
@@ -39,3 +42,9 @@ class GuessThatSongQuiz:
 quiz = GuessThatSongQuiz()
 quiz.play()
 print(summarize_quiz(quiz.quiz_id))
+print(f"Total points {quiz.points}")
+
+# 1) sprawdzanie po feat.
+# 2) [DONE] punktacja
+# 3) leaderboard
+# 4) mniej tekstu, im dalsze pytanie
