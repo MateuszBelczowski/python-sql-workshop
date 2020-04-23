@@ -1,6 +1,7 @@
 import sqlite3
+import json
 
-DATABASE_NAME = "sqlite_example2.db"
+DATABASE_NAME = "music_quiz.db"
 
 connection = sqlite3.connect(DATABASE_NAME)
 
@@ -25,8 +26,20 @@ def add_song(artist, title, lyrics):
     with connection:
         connection.execute(insert_song_sql, (artist, title, lyrics))
 
+def add_all_songs():
+    with open("final_songs.json", encoding="utf-8") as file_with_songs:
+        songs = json.load(file_with_songs)
+    for song in songs:
+        add_song(song['artist'], song['title'], song['lyrics'])
 
+def get_all_songs():
+    get_songs_sql = """
+    SELECT * FROM songs;
+    """
+    all_songs = connection.execute(get_songs_sql).fetchall()
+    print(f"There are {len(all_songs)} in the database")
 
 
 create_songs_table()
-add_song("James Blunt", "Monster3", "nananana2")
+add_all_songs()
+get_all_songs()
