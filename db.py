@@ -74,7 +74,19 @@ def add_quiz(nickname, total_questions):
     return res.lastrowid
 
 def create_answers_table():
-    pass
+    create_answers_sql = """
+    CREATE TABLE IF NOT EXISTS
+    answers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    song_id INTEGER,
+    quiz_id INTEGER,
+    answer TEXT,
+    given_lyrics TEXT,
+    FOREIGN KEY(song_id) REFERENCES songs(id),
+    FOREIGN KEY(quiz_id) REFERENCES quizzes(id)
+    );
+    """
+    connection.execute(create_answers_sql)
 
 def add_answer():
     pass
@@ -87,3 +99,4 @@ create_songs_table()
 create_quizzes_table()
 quiz_id = add_quiz("Mateusz", 4)
 print(f"Utworzony quiz ma id {quiz_id}")
+create_answers_table()
