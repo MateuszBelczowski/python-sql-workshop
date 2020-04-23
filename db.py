@@ -16,4 +16,17 @@ def create_songs_table():
     """
     connection.execute(create_songs_table_sql)
 
+def add_song(artist, title, lyrics):
+    insert_song_sql = """
+    INSERT INTO 
+    songs(artist, title, lyrics)
+    VALUES (?, ?, ?);
+    """
+    with connection:
+        connection.execute(insert_song_sql, (artist, title, lyrics))
+
+
+
+
 create_songs_table()
+add_song("James Blunt", "Monster3", "nananana2")
