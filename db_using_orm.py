@@ -49,8 +49,9 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 def create_multiple_songs():
-    with open("final_songs.json") as f:
+    with open("final_songs.json", encoding="utf-8") as f:
         songs = json.load(f)
+    print(len(songs))
     for song in songs:
         song_obj = Song(artist=song['artist'], title=song['title'], lyrics=song['lyrics'])
         session.add(song_obj)
@@ -86,6 +87,7 @@ def summarize_quiz(quiz_id):
         print(answer.answer, answer.song.artist)
 
 # create_multiple_songs()
+
 
 
 

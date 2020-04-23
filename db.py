@@ -63,7 +63,7 @@ def add_song():
         connection.execute(insert_song_stmt)
 
 def add_multiple_songs():
-    with open("final_songs.json") as f:
+    with open("final_songs.json", encoding="utf-8") as f:
         songs = json.load(f)
     for song in songs:
         insert_song_stmt = f"""
@@ -77,7 +77,7 @@ def add_multiple_songs():
 
 
 def add_multiple_songs_faster():
-    with open("final_songs.json") as f:
+    with open("final_songs.json", encoding="utf-8") as f:
         songs = json.load(f)
     insert_songs_stmt = f"""
     INSERT INTO songs (artist, title, lyrics)
@@ -99,13 +99,6 @@ def get_random_lyrics(characters_count=200):
     idx, lyrics = random.choice(all_songs)
     return idx, lyrics[:characters_count]
 
-def get_artist_and_lyrics(artist, lyrics):
-    select_stmt = f"""
-    SELECT * FROM songs where artist=? and lyrics like ?
-    """
-    lyrics_like_expression = f"%{lyrics}%"
-    matching_results = connection.execute(select_stmt, (artist, lyrics_like_expression)).fetchall()
-    return matching_results
 
 def get_song_by_id(song_id):
     select_stmt = f"""

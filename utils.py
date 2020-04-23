@@ -28,10 +28,11 @@ class TranslationNotFound(Exception):
     pass
 
 
+session = requests.Session()
+
 def fetch_page(url):
-    with requests.Session() as session:
-        response = session.get(url)
-        return response.content
+    response = session.get(url)
+    return response.content
 
 
 def search_song(song):
@@ -95,7 +96,8 @@ def retrieve_artist_and_title(song):
 def download_lyrics(song):
     search_results = search_song(song)
     try:
-        song_page = parse_search_results(search_results)[0]
+        results = parse_search_results(search_results)
+        song_page = [result for result in results if result.title.lower().strip() == song.title.lower()][0]
         return parse_song_lyrics(fetch_lyrics(song_page))
     except IndexError:
         raise LyricsNotFound("No lyrics found")
@@ -131,13 +133,15 @@ def download_translation(song):
 #             sys.exit(1)
 #     print(f"{lyrics}\n{translation}")
 
-with open("final_songs.json") as f:
+#
+with open("final_songs.json", encoding="utf-8") as f:
     songs = json.load(f)
 
+print(download_lyrics(Song("Adele", "Set Fire to The Rain", None)))
+
+new_songs = []
 for idx, song in enumerate(songs, start=1):
-    if song['lyrics']:
-        continue
-    print(f"downloading for {song} ({idx} out of {len(songs)}")
+    print(f"downloading for {song['artist']}-{song['title']} ({idx} out of {len(songs)})")
     try:
         lyrics = download_lyrics(Song(*(song['artist'], song['title']), None))
     except LyricsNotFound:
@@ -145,7 +149,6 @@ for idx, song in enumerate(songs, start=1):
         print(f"No lyrics found for {song}")
         continue
     song['lyrics'] = lyrics
-    print(lyrics)
-
-with open("final_songs2.json", "w+") as f:
-    json.dump(songs, f)
+    new_songs.append(song)
+with open("final_songs.json", "w", encoding="utf-8") as f:
+    json.dump(new_songs, f)
