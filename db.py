@@ -88,11 +88,20 @@ def create_answers_table():
     """
     connection.execute(create_answers_sql)
 
-def add_answer():
-    pass
+def add_answer(song_id, quiz_id, answer, given_lyrics):
+    add_answer_sql = """
+    INSERT INTO answers(song_id, quiz_id, answer, given_lyrics)
+    VALUES (?, ?, ?, ?);
+    """
+    with connection:
+        connection.execute(add_answer_sql, (song_id, quiz_id, answer, given_lyrics))
 
-def summarize_quiz():
-    pass
+def summarize_quiz(quiz_id):
+    summary_sql = """
+    SELECT songs.artist, answers.answer FROM answers JOIN songs.id=answers.song_id
+    WHERE quiz_id=?
+    """
+    connection.execute(summary_sql, (quiz_id, ))
 
 
 create_songs_table()
