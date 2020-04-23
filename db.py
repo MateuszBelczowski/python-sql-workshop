@@ -55,7 +55,15 @@ def get_random_lyrics():
     return id, lyrics
 
 def create_quizzes_table():
-    pass
+    create_quizzes_table_sql = """
+    CREATE TABLE IF NOT EXISTS
+    quizzes(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nickname TEXT,
+    total_questions INTEGER
+    );
+    """
+    connection.execute(create_quizzes_table_sql)
 
 def add_quiz():
     pass
@@ -71,6 +79,4 @@ def summarize_quiz():
 
 
 create_songs_table()
-id, lyrics = get_random_lyrics()
-print(lyrics)
-print(get_song_by_id(id))
+create_quizzes_table()
