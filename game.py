@@ -7,7 +7,12 @@ class GuessThatSongQuiz:
         total_questions = input("How many questions do you want? ->")
         quiz_id = add_quiz(username, total_questions)
         self.quiz_id = quiz_id
-        self.total_questions = total_questions
+        self.total_questions = int(total_questions)
+
+    def play(self):
+        for i in range(self.total_questions):
+            self.ask_question()
+
 
 
     def ask_question(self):
@@ -32,5 +37,5 @@ class GuessThatSongQuiz:
 
 
 quiz = GuessThatSongQuiz()
-quiz.ask_question()
+quiz.play()
 print(summarize_quiz(quiz.quiz_id))
