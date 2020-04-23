@@ -43,7 +43,7 @@ def get_all_songs():
 
 def get_song_by_id(song_id):
     get_song_sql = """
-    SELECT * FROM songs WHERE id=?;
+    SELECT artist,title FROM songs WHERE id=?;
     """
     one_song = connection.execute(get_song_sql, (song_id, )).fetchone()
     return one_song
@@ -105,14 +105,14 @@ def summarize_quiz(quiz_id):
     return summary
 
 
-create_songs_table()
-create_quizzes_table()
-quiz_id = add_quiz("Mateusz", 4)
-print(f"Utworzony quiz ma id {quiz_id}")
-create_answers_table()
-for i in range(1, 6):
-    add_answer(i, quiz_id, "Adele", "blabla")
-
-print(summarize_quiz(quiz_id))
+# create_songs_table()
+# create_quizzes_table()
+# quiz_id = add_quiz("Mateusz", 4)
+# print(f"Utworzony quiz ma id {quiz_id}")
+# create_answers_table()
+# for i in range(1, 6):
+#     add_answer(i, quiz_id, "Adele", "blabla")
+#
+# print(summarize_quiz(quiz_id))
 
 
